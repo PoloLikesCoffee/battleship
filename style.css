@@ -1,0 +1,371 @@
+@font-face {
+	font-family: 'bananaslip_plusplus';
+	src: url('fonts/bananaslipplus-webfont.woff2') format('woff2'),
+		url('fonts/bananaslipplus-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+:root {
+	--font-family: 'bananaslip_plusplus', 'Arvo', serif;
+	--color-yellow: rgb(253, 200, 0);
+	--color-white: rgb(255, 255, 254);
+	--color-white-transparent: rgba(255, 255, 255, 0.2);
+	--color-black: rgb(1, 0, 0);
+	--color-gray: rgb(200, 200, 200);
+	--color-transparent: rgba(1, 0, 0, 0.5);
+	--color-beige: rgb(255, 236, 177);
+	--color-blue: rgb(44, 188, 255);
+}
+
+*,
+*::before,
+*::after {
+	font-family: inherit;
+	font-weight: normal;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	margin: 0;
+	background-color: var(--color-yellow);
+	font-family: var(--font-family);
+	font-size: 0.7rem;
+	font-weight: normal;
+	color: var(--color-black);
+}
+
+/* website layout*/
+#content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100vw;
+	height: 100%;
+}
+
+.header {
+	grid-area: header;
+	color: var(--color-beige);
+	font-size: calc(3vw + 2rem);
+	font-weight: bold;
+	text-align: center;
+	margin: 0.5rem 0.5rem;
+}
+
+.btn {
+	cursor: pointer;
+	background: 0;
+	border: 0;
+	padding: 0;
+	color: var(--color-white);
+	font-size: 1rem;
+}
+
+.container {
+	display: none;
+	justify-content: center;
+	width: 100%;
+}
+
+.container.show {
+	display: flex;
+}
+
+.info-container {
+	display: none;
+	justify-content: center;
+	width: 100%;
+}
+
+.info-container.show {
+	display: flex;
+}
+
+.user-container,
+.computer-container {
+	margin: 0 4vmin;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--color-beige);
+	width: 50vmin;
+	height: 22vmin;
+	filter: drop-shadow(10px 10px 0 rgba(0, 0, 0, 0.2));
+}
+
+#user-details,
+#computer-details {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.info-container span {
+	font-size: 0.8rem;
+	margin: 0.4vmin;
+}
+
+.line {
+	opacity: 0.5;
+	text-decoration: line-through;
+}
+
+.grid {
+	margin: 4vmin;
+	display: grid;
+	background-color: var(--color-blue);
+	grid-template-rows: repeat(10, 5vmin);
+	grid-template-columns: repeat(10, 5vmin);
+	cursor: pointer;
+	filter: drop-shadow(10px 10px 0 rgba(0, 0, 0, 0.2));
+}
+
+.grid div {
+	border: 1px solid var(--color-white-transparent);
+}
+
+.grid-computer > div:hover {
+	background-color: var(--color-white-transparent);
+}
+
+.garage-container {
+	margin: 4vmin;
+	display: none;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	width: 28vmin;
+	height: 50vmin;
+	cursor: pointer;
+	filter: drop-shadow(10px 10px 0 rgba(0, 0, 0, 0.2));
+}
+
+.garage-container.show {
+	display: flex;
+}
+
+.ship > div {
+	width: 5vmin;
+	height: 5vmin;
+}
+
+.ship {
+	cursor: move;
+	display: flex;
+	flex-wrap: wrap;
+	margin: 1vmin;
+	width: calc(5vmin * var(--width), 1);
+	height: calc(5vmin * var(--height), 1);
+	/* border-radius: 2.5vmin; */
+}
+
+.ship > div:first-child,
+.ship > div:last-child {
+	font-size: 1rem;
+	color: var(--color-white-transparent);
+	/* background-color: var(--color-white-transparent); */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ship > div:first-child:hover,
+.ship > div:last-child:hover {
+	color: var(--color-white);
+	background-color: var(--color-white-transparent);
+}
+
+.ship.dragging {
+	opacity: 0.7;
+}
+
+.grid-computer > .taken {
+	background-color: var(--color-blue);
+}
+
+.taken,
+.ship {
+	background-color: var(--color-gray);
+}
+
+.hit,
+.miss {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.hit::after,
+.miss::after {
+	content: '';
+	position: absolute;
+	border-radius: 100%;
+	width: 2vmin;
+	height: 2vmin;
+}
+
+.hit::after {
+	background-color: var(--color-black);
+}
+
+.miss::after {
+	background-color: var(--color-white);
+}
+
+.hit::before,
+.miss::before {
+	content: '';
+	position: absolute;
+	animation: hit 0.2s ease-out forwards;
+	border-width: 0.1vmin;
+	border-style: solid;
+	border-radius: 100%;
+	width: 2vmin;
+	height: 2vmin;
+}
+
+.hit::before {
+	border-color: var(--color-black);
+}
+
+.miss::before {
+	border-color: var(--color-white);
+}
+
+.sunk {
+	background-color: var(--color-transparent) !important;
+}
+
+.sunk::after {
+	content: '';
+	position: absolute;
+	animation: hit 0.2s ease-out forwards;
+	border-width: 0.1vmin;
+	border-style: solid;
+	border-radius: 100%;
+	width: 2vmin;
+	height: 2vmin;
+	background-color: var(--color-transparent);
+}
+
+.start-screen {
+	display: flex;
+	position: fixed;
+	top: calc(5vw + 2rem);
+	right: 0;
+	left: 0;
+	bottom: 0;
+	width: 100vw;
+	height: 100vh;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--color-yellow);
+}
+
+.start-screen.hide {
+	display: none;
+}
+
+.btn-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin: 4vmin;
+	width: 28vmin;
+}
+
+.btn-container.hide {
+	display: none;
+}
+
+.btn-start-game.hide {
+	display: none;
+}
+
+.final-screen {
+	display: none;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	width: 100vw;
+	height: 100vh;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--color-yellow);
+}
+
+.final-screen.show {
+	display: flex;
+}
+
+#winning-text {
+	color: var(--color-black);
+	font-size: calc(4vw + 2rem);
+	margin-bottom: 5rem;
+	text-align: center;
+}
+
+.open {
+	font-size: 3rem;
+	margin-bottom: 10rem;
+	padding: 1rem;
+	color: var(--color-yellow);
+	background-color: var(--color-black);
+	filter: drop-shadow(10px 10px 0 rgba(0, 0, 0, 0.2));
+}
+
+.open:hover {
+	color: var(--color-black);
+	background-color: var(--color-white);
+}
+
+.reload {
+	font-size: 3rem;
+	margin-bottom: 10rem;
+	padding: 1rem;
+	color: var(--color-yellow);
+	background-color: var(--color-black);
+	filter: drop-shadow(10px 10px 0 rgba(0, 0, 0, 0.2));
+}
+
+.reload:hover {
+	color: var(--color-black);
+	background-color: var(--color-white);
+}
+
+/*animation*/
+
+@keyframes hit {
+	0% {
+		opacity: 1;
+		transform: scale(0);
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(4);
+	}
+}
+
+/*responsive*/
+@media screen and (max-width: 700px) {
+	.container {
+		flex-direction: column;
+		align-items: center;
+	}
+	.info-container {
+		flex-direction: column;
+		align-items: center;
+		gap: 2vmin;
+	}
+}
